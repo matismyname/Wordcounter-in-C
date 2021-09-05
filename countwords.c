@@ -10,13 +10,14 @@ struct words {
 	int count;
 };
 
-#define NUMOFWORDS 10	//Number of most occuring words
+#define NUMOFWORDS 20	//Number of most occuring words
 
 struct words *makestruct(char temparr[]);
 struct words *comparestruct(struct words *currentptr, char temparr[]);
 int cmpstr(char s[], char t[]);
 int cmparrvals(int ind);
 void wordcount(int wcr, char temparr[]);
+void freenode(struct words *ptr);
 
 char wchar[NUMOFWORDS][20];	//Array to save the words, max word length is 20
 int wc[NUMOFWORDS];		//Array to save the amount of occurences
@@ -48,8 +49,24 @@ int main(int argc, char **argv) {
 	}
 	fclose(fptr);
 	for(int i = 0; i<NUMOFWORDS; i++) {printf("Word: %s \t \t Count: %d \n", wchar[i], wc[i]);}
+	freenode(rootptr);
 
 	return 0;
+}
+
+//Delete the binary search tree
+//Most modern OS do this automatically
+void freenode(struct words *rootptr) {
+	if(rootptr == NULL) {
+		;
+	}
+	else {
+		freenode(rootptr->laddr);
+		freenode(rootptr->raddr);
+		free(rootptr);
+		rootptr = NULL;
+	}
+
 }
 
 //Generates nodes for the tree data structure
